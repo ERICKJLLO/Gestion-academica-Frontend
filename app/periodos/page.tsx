@@ -1,0 +1,3 @@
+import {CalendarDays} from 'lucide-react';
+import {AppShell} from '@/src/features/common/components/AppShell';
+export default function Periodos(){return <AppShell title="Períodos académicos" subtitle="Aquí organizarás tus semestres y sus materias."><div className="card p-12 text-center"><CalendarDays className="mx-auto text-violet-300" size={42}/><h2 className="mt-4 text-xl font-bold">Estamos preparando tus períodos</h2><p className="mx-auto mt-3 max-w-xl text-slate-500">El modelo de datos ya existe en el backend, pero todavía faltan las rutas para crear, consultar, editar y eliminar períodos. Esta pantalla se conectará cuando estén listas.</p></div></AppShell>}
