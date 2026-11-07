@@ -72,8 +72,9 @@ setEditing(null);setOpen(false);setName('');setPeriodId('');await refresh();}cat
   <p className="text-sm text-amber-700">
     Primero debes registrar un período académico.
   </p>
-)}{actionError&&<p role="alert" className="text-sm text-red-600">{actionError}</p>}<button disabled={saving} className="btn-primary w-full">{saving?'Guardando…':editing?'Guardar cambios':'Guardar materia'}</button></form></div></div>}
+)}{actionError&&<p role="alert" className="text-sm text-red-600">{actionError}</p>}<button type="submit" disabled={saving} className="btn-primary w-full">{saving?'Guardando…':editing?'Guardar cambios':'Guardar materia'}</button></form></div></div>}
  </>;
 }
+
 
 

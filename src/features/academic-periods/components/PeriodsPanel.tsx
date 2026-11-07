@@ -297,7 +297,7 @@ export function PeriodsPanel() {
                 </p>
               )}
 
-              <button
+              <button type="submit"
                 disabled={saving}
                 className="btn-primary w-full"
               >
@@ -314,3 +314,4 @@ export function PeriodsPanel() {
     </div>
   );
 }
+
