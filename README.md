@@ -52,7 +52,10 @@ Abrir `http://localhost:3000`.
 ```bash
 npm run lint
 npm run build
+npm run format:check
 ```
+
+`npm run lint` comprueba los tipos con TypeScript; `npm run format:check` revisa el formato con Prettier. Para ordenar el formato del frontend se puede ejecutar `npm run format`.
 
 Prueba manual de integración con la API disponible:
 
@@ -93,3 +96,7 @@ Después de cambiar variables se debe volver a desplegar. El backend tiene que a
 - **Mario:** backend, base de datos y almacenamiento de archivos.
 
 Proyecto académico realizado en equipo.
+
+## Cuentas de demostración
+
+Antes de entregar, agregar aquí las credenciales **de prueba** creadas por el seed del backend: una cuenta `ADMIN` y una `USER`. Solicitarlas al responsable del backend. No publicar contraseñas personales ni credenciales de servicios.
