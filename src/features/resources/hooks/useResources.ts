@@ -14,6 +14,7 @@ import type {
 
 export function useResources() {
   const [resources, setResources] = useState<AcademicResource[]>([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
@@ -37,6 +38,7 @@ export function useResources() {
       });
 
       setResources(response.data);
+      setTotal(response.pagination.total);
       setTotalPages(
         Math.max(1, response.pagination.totalPages)
       );
@@ -78,6 +80,7 @@ export function useResources() {
 
   return {
     resources,
+    total,
     loading,
     deleting,
     error,

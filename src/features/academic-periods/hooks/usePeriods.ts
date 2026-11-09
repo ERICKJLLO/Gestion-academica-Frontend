@@ -12,6 +12,7 @@ import type {
 
 export function usePeriods() {
   const [periods, setPeriods] = useState<AcademicPeriod[]>([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -23,6 +24,7 @@ export function usePeriods() {
     try {
       const response = await periodsService.getAll();
       setPeriods(response.data);
+      setTotal(response.pagination.total);
     } catch (err) {
       setError(
         err instanceof Error
@@ -76,6 +78,7 @@ export function usePeriods() {
 
   return {
     periods,
+    total,
     loading,
     saving,
     error,
