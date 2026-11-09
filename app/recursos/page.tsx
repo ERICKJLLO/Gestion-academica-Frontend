@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useRef, useState, type FormEvent } from "react";
-import { FileUp, BookOpen } from "lucide-react";
+import { FileUp, BookOpen, FileCheck2 } from "lucide-react";
 
 import { AppShell } from "@/src/features/common/components/AppShell";
 import { useAuth } from "@/src/features/auth/hooks/useAuth";
@@ -37,6 +37,11 @@ export default function RecursosPage() {
 
     if (!subjectId) {
       setError("Selecciona una materia.");
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      setError("El archivo no puede superar los 10 MB.");
       return;
     }
 
@@ -128,17 +133,24 @@ export default function RecursosPage() {
 
           <label className="block text-sm font-semibold">
             Archivo
-
+          </label>
+          <div className="rounded-2xl border-2 border-dashed border-violet-200 bg-violet-50/50 p-5 text-center">
             <input
               ref={fileInput}
+              id="resource-file"
               required
               type="file"
-              className="mt-2 block w-full rounded-xl border border-dashed border-slate-300 p-4 text-sm"
-              onChange={(e) =>
-                setFile(e.target.files?.[0] ?? null)
-              }
+              className="sr-only"
+              accept=".pdf,.doc,.docx,.ppt,.pptx,.png,.jpg,.jpeg,.txt,.zip,.js,.ts,.tsx,.py"
+              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
             />
-          </label>
+            {file ? <FileCheck2 className="mx-auto text-emerald-600" size={30} /> : <FileUp className="mx-auto text-primary" size={30} />}
+            <label htmlFor="resource-file" className="mt-3 inline-flex cursor-pointer items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-primary shadow-sm ring-1 ring-violet-200 transition hover:bg-violet-100 focus-within:ring-2">
+              {file ? 'Cambiar archivo' : 'Seleccionar archivo'}
+            </label>
+            <p className="mt-3 break-all text-sm text-slate-600" aria-live="polite">{file ? file.name : 'PDF, documentos, imágenes o código'}</p>
+            <p className="mt-1 text-xs text-slate-400">Tamaño máximo: 10 MB</p>
+          </div>
 
           {error && (
             <div

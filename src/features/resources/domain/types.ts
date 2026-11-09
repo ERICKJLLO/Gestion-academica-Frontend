@@ -6,6 +6,7 @@
   subjectId: string;
   uploadedById: string;
   createdAt: string;
+  publicUrl?: string;
 }
 
 export interface ResourceFilters {

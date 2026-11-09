@@ -26,7 +26,7 @@ export const resourcesService = {
   },
 
   getById: (id: string) =>
-    http<{ data: AcademicResource }>(
+    http<AcademicResource>(
       `/api/resources/${encodeURIComponent(id)}`
     ),
 

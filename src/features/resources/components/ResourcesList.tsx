@@ -11,9 +11,12 @@ import {
   ChevronLeft,
   ChevronRight,
   RefreshCw,
+  Download,
 } from "lucide-react";
 
 import { useResources } from "../hooks/useResources";
+import { useSubjects } from "@/src/features/subjects/hooks/useSubjects";
+import { resourcesService } from "../services/resources";
 
 function getFileIcon(fileType: string) {
   if (fileType.includes("image")) {
@@ -48,9 +51,28 @@ export function ResourcesList() {
     changeSearch,
     loadResources,
     removeResource,
+    changeSubject,
+    subjectId,
   } = useResources();
+  const { subjects } = useSubjects();
 
   const [actionError, setActionError] = useState("");
+  const [openingId, setOpeningId] = useState<string | null>(null);
+
+  const handleOpen = async (id: string) => {
+    setOpeningId(id);
+    setActionError("");
+    try {
+      const resource = await resourcesService.getById(id);
+      if (!resource.publicUrl || !resource.publicUrl.startsWith("https://")) {
+        throw new Error("Este archivo aún no tiene un enlace de descarga disponible.");
+      }
+      window.location.assign(resource.publicUrl);
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "No se pudo abrir el archivo.");
+      setOpeningId(null);
+    }
+  };
 
   const handleDelete = async (id: string) => {
     const confirmed = window.confirm(
@@ -84,20 +106,26 @@ export function ResourcesList() {
         </p>
       </div>
 
-      <div className="relative mb-6">
-        <Search
+      <div className="mb-6 grid gap-3 sm:grid-cols-[minmax(0,1fr)_220px]">
+      <div className="relative">
+        <Search aria-hidden="true"
           size={19}
-          className="absolute left-4 top-3.5 text-slate-400"
+          className="pointer-events-none absolute left-4 top-3.5 text-slate-400"
         />
 
         <input
           type="search"
           aria-label="Buscar materiales"
           placeholder="Buscar por nombre..."
-          className="field pl-11"
+          className="field search-field"
           value={search}
           onChange={(e) => changeSearch(e.target.value)}
         />
+      </div>
+      <select className="field" aria-label="Filtrar por materia" value={subjectId} onChange={(event) => changeSubject(event.target.value)}>
+        <option value="">Todas las materias</option>
+        {subjects.map((subject) => <option key={subject.id} value={subject.id}>{subject.name}</option>)}
+      </select>
       </div>
 
       {actionError && (
@@ -165,6 +193,16 @@ export function ResourcesList() {
                   </p>
                 </div>
 
+                <button
+                  type="button"
+                  disabled={openingId === resource.id}
+                  onClick={() => void handleOpen(resource.id)}
+                  aria-label={`Abrir ${resource.title}`}
+                  className="rounded-lg p-2 text-primary transition hover:bg-violet-50 disabled:opacity-50"
+                  title="Ver o descargar"
+                >
+                  <Download size={19} />
+                </button>
                 <button
                   type="button"
                   disabled={deleting}
