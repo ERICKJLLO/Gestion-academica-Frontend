@@ -1,5 +1,5 @@
-﻿import { AppShell } from "@/src/features/common/components/AppShell";
-import { PeriodsPanel } from "@/src/features/academic-periods/components/PeriodsPanel";
+﻿import { AppShell } from '@/src/features/common/components/AppShell';
+import { PeriodsPanel } from '@/src/features/academic-periods/components/PeriodsPanel';
 
 export default function PeriodosPage() {
   return (

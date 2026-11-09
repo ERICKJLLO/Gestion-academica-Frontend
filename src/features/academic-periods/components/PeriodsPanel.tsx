@@ -1,49 +1,31 @@
-﻿"use client";
+﻿'use client';
 
-import { useState, type FormEvent } from "react";
-import {
-  CalendarDays,
-  Plus,
-  Pencil,
-  Trash2,
-  X,
-  RefreshCw,
-} from "lucide-react";
+import { useState, type FormEvent } from 'react';
+import { CalendarDays, Plus, Pencil, Trash2, X, RefreshCw } from 'lucide-react';
 
-import { usePeriods } from "../hooks/usePeriods";
-import type {
-  AcademicPeriod,
-  CreatePeriodData,
-} from "../domain/types";
+import { usePeriods } from '../hooks/usePeriods';
+import type { AcademicPeriod, CreatePeriodData } from '../domain/types';
 
 const emptyForm: CreatePeriodData = {
-  name: "",
-  startDate: "",
-  endDate: "",
+  name: '',
+  startDate: '',
+  endDate: '',
 };
 
 export function PeriodsPanel() {
-  const {
-    periods,
-    loading,
-    saving,
-    error,
-    loadPeriods,
-    createPeriod,
-    updatePeriod,
-    deletePeriod,
-  } = usePeriods();
+  const { periods, loading, saving, error, loadPeriods, createPeriod, updatePeriod, deletePeriod } =
+    usePeriods();
 
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<AcademicPeriod | null>(null);
   const [form, setForm] = useState<CreatePeriodData>(emptyForm);
-  const [formError, setFormError] = useState("");
-  const [actionError, setActionError] = useState("");
+  const [formError, setFormError] = useState('');
+  const [actionError, setActionError] = useState('');
 
   const openCreate = () => {
     setEditing(null);
     setForm(emptyForm);
-    setFormError("");
+    setFormError('');
     setShowForm(true);
   };
 
@@ -56,23 +38,21 @@ export function PeriodsPanel() {
       endDate: period.endDate.slice(0, 10),
     });
 
-    setFormError("");
+    setFormError('');
     setShowForm(true);
   };
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    setFormError("");
+    setFormError('');
 
     if (!form.name.trim()) {
-      setFormError("Escribe el nombre del período.");
+      setFormError('Escribe el nombre del período.');
       return;
     }
 
     if (form.endDate < form.startDate) {
-      setFormError(
-        "La fecha de finalización no puede ser anterior a la de inicio."
-      );
+      setFormError('La fecha de finalización no puede ser anterior a la de inicio.');
       return;
     }
 
@@ -91,33 +71,23 @@ export function PeriodsPanel() {
       setShowForm(false);
       setEditing(null);
       setForm(emptyForm);
-      setActionError("");
+      setActionError('');
     } catch (err) {
-      setFormError(
-        err instanceof Error
-          ? err.message
-          : "No se pudo guardar el período."
-      );
+      setFormError(err instanceof Error ? err.message : 'No se pudo guardar el período.');
     }
   };
 
   const handleDelete = async (period: AcademicPeriod) => {
-    const confirmed = window.confirm(
-      `¿Seguro que deseas eliminar "${period.name}"?`
-    );
+    const confirmed = window.confirm(`¿Seguro que deseas eliminar "${period.name}"?`);
 
     if (!confirmed) return;
 
-    setActionError("");
+    setActionError('');
 
     try {
       await deletePeriod(period.id);
     } catch (err) {
-      setActionError(
-        err instanceof Error
-          ? err.message
-          : "No se pudo eliminar el período."
-      );
+      setActionError(err instanceof Error ? err.message : 'No se pudo eliminar el período.');
     }
   };
 
@@ -126,9 +96,7 @@ export function PeriodsPanel() {
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-xl font-bold">Mis períodos</h2>
-          <p className="mt-1 text-sm text-slate-500">
-            Organiza tus materias por semestre.
-          </p>
+          <p className="mt-1 text-sm text-slate-500">Organiza tus materias por semestre.</p>
         </div>
 
         <button onClick={openCreate} className="btn-primary">
@@ -144,9 +112,7 @@ export function PeriodsPanel() {
       )}
 
       {loading ? (
-        <div className="card p-12 text-center text-slate-500">
-          Cargando períodos...
-        </div>
+        <div className="card p-12 text-center text-slate-500">Cargando períodos...</div>
       ) : error ? (
         <div className="card p-10 text-center">
           <p className="text-red-600">{error}</p>
@@ -161,14 +127,9 @@ export function PeriodsPanel() {
         </div>
       ) : periods.length === 0 ? (
         <div className="card p-14 text-center">
-          <CalendarDays
-            size={48}
-            className="mx-auto text-violet-300"
-          />
+          <CalendarDays size={48} className="mx-auto text-violet-300" />
 
-          <h3 className="mt-5 text-xl font-bold">
-            Todavía no tienes períodos
-          </h3>
+          <h3 className="mt-5 text-xl font-bold">Todavía no tienes períodos</h3>
 
           <p className="mt-2 text-slate-500">
             Crea tu primer semestre para comenzar a organizar tus materias.
@@ -197,13 +158,11 @@ export function PeriodsPanel() {
 
               <div className="mt-4 space-y-2 text-sm text-slate-500">
                 <p>
-                  <strong>Inicio:</strong>{" "}
-                  {period.startDate.slice(0, 10)}
+                  <strong>Inicio:</strong> {period.startDate.slice(0, 10)}
                 </p>
 
                 <p>
-                  <strong>Finalización:</strong>{" "}
-                  {period.endDate.slice(0, 10)}
+                  <strong>Finalización:</strong> {period.endDate.slice(0, 10)}
                 </p>
               </div>
 
@@ -240,13 +199,10 @@ export function PeriodsPanel() {
           >
             <div className="mb-6 flex items-center justify-between">
               <h2 id="period-form-title" className="text-2xl font-bold">
-                {editing ? "Editar período" : "Nuevo período"}
+                {editing ? 'Editar período' : 'Nuevo período'}
               </h2>
 
-              <button
-                onClick={() => setShowForm(false)}
-                aria-label="Cerrar formulario"
-              >
+              <button onClick={() => setShowForm(false)} aria-label="Cerrar formulario">
                 <X size={22} />
               </button>
             </div>
@@ -259,9 +215,7 @@ export function PeriodsPanel() {
                   className="field mt-2"
                   placeholder="Ej. Semestre 2026-2"
                   value={form.name}
-                  onChange={(e) =>
-                    setForm({ ...form, name: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
                 />
               </label>
 
@@ -272,9 +226,7 @@ export function PeriodsPanel() {
                   type="date"
                   className="field mt-2"
                   value={form.startDate}
-                  onChange={(e) =>
-                    setForm({ ...form, startDate: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, startDate: e.target.value })}
                 />
               </label>
 
@@ -285,9 +237,7 @@ export function PeriodsPanel() {
                   type="date"
                   className="field mt-2"
                   value={form.endDate}
-                  onChange={(e) =>
-                    setForm({ ...form, endDate: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, endDate: e.target.value })}
                 />
               </label>
 
@@ -297,15 +247,8 @@ export function PeriodsPanel() {
                 </p>
               )}
 
-              <button type="submit"
-                disabled={saving}
-                className="btn-primary w-full"
-              >
-                {saving
-                  ? "Guardando..."
-                  : editing
-                    ? "Guardar cambios"
-                    : "Crear período"}
+              <button type="submit" disabled={saving} className="btn-primary w-full">
+                {saving ? 'Guardando...' : editing ? 'Guardar cambios' : 'Crear período'}
               </button>
             </form>
           </div>
@@ -314,4 +257,3 @@ export function PeriodsPanel() {
     </div>
   );
 }
-

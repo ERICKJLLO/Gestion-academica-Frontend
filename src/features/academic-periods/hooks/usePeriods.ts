@@ -1,36 +1,28 @@
-﻿"use client";
+﻿'use client';
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from 'react';
 
-import { periodsService } from "../services/periods";
+import { periodsService } from '../services/periods';
 
-import type {
-  AcademicPeriod,
-  CreatePeriodData,
-  UpdatePeriodData,
-} from "../domain/types";
+import type { AcademicPeriod, CreatePeriodData, UpdatePeriodData } from '../domain/types';
 
 export function usePeriods() {
   const [periods, setPeriods] = useState<AcademicPeriod[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const loadPeriods = useCallback(async () => {
     setLoading(true);
-    setError("");
+    setError('');
 
     try {
       const response = await periodsService.getAll();
       setPeriods(response.data);
       setTotal(response.pagination.total);
     } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "No se pudieron cargar los períodos."
-      );
+      setError(err instanceof Error ? err.message : 'No se pudieron cargar los períodos.');
     } finally {
       setLoading(false);
     }
@@ -51,10 +43,7 @@ export function usePeriods() {
     }
   };
 
-  const updatePeriod = async (
-    id: string,
-    data: UpdatePeriodData
-  ) => {
+  const updatePeriod = async (id: string, data: UpdatePeriodData) => {
     setSaving(true);
 
     try {

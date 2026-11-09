@@ -1,6 +1,6 @@
-﻿"use client";
+﻿'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import {
   FileText,
   FileCode,
@@ -12,26 +12,26 @@ import {
   ChevronRight,
   RefreshCw,
   Download,
-} from "lucide-react";
+} from 'lucide-react';
 
-import { useResources } from "../hooks/useResources";
-import { useSubjects } from "@/src/features/subjects/hooks/useSubjects";
-import { resourcesService } from "../services/resources";
+import { useResources } from '../hooks/useResources';
+import { useSubjects } from '@/src/features/subjects/hooks/useSubjects';
+import { resourcesService } from '../services/resources';
 
 function getFileIcon(fileType: string) {
-  if (fileType.includes("image")) {
+  if (fileType.includes('image')) {
     return FileImage;
   }
 
   if (
-    fileType.includes("javascript") ||
-    fileType.includes("typescript") ||
-    fileType.includes("text/plain")
+    fileType.includes('javascript') ||
+    fileType.includes('typescript') ||
+    fileType.includes('text/plain')
   ) {
     return FileCode;
   }
 
-  if (fileType.includes("pdf")) {
+  if (fileType.includes('pdf')) {
     return FileText;
   }
 
@@ -56,91 +56,86 @@ export function ResourcesList() {
   } = useResources();
   const { subjects } = useSubjects();
 
-  const [actionError, setActionError] = useState("");
+  const [actionError, setActionError] = useState('');
   const [openingId, setOpeningId] = useState<string | null>(null);
 
   const handleOpen = async (id: string) => {
     setOpeningId(id);
-    setActionError("");
+    setActionError('');
     try {
       const resource = await resourcesService.getById(id);
-      if (!resource.publicUrl || !resource.publicUrl.startsWith("https://")) {
-        throw new Error("Este archivo aún no tiene un enlace de descarga disponible.");
+      if (!resource.publicUrl || !resource.publicUrl.startsWith('https://')) {
+        throw new Error('Este archivo aún no tiene un enlace de descarga disponible.');
       }
       window.location.assign(resource.publicUrl);
     } catch (err) {
-      setActionError(err instanceof Error ? err.message : "No se pudo abrir el archivo.");
+      setActionError(err instanceof Error ? err.message : 'No se pudo abrir el archivo.');
       setOpeningId(null);
     }
   };
 
   const handleDelete = async (id: string) => {
-    const confirmed = window.confirm(
-      "¿Seguro que deseas eliminar este material?"
-    );
+    const confirmed = window.confirm('¿Seguro que deseas eliminar este material?');
 
     if (!confirmed) return;
 
-    setActionError("");
+    setActionError('');
 
     try {
       await removeResource(id);
     } catch (err) {
-      setActionError(
-        err instanceof Error
-          ? err.message
-          : "No se pudo eliminar el material."
-      );
+      setActionError(err instanceof Error ? err.message : 'No se pudo eliminar el material.');
     }
   };
 
   return (
     <section className="card p-6">
       <div className="mb-6">
-        <h2 className="text-xl font-bold">
-          Mis materiales
-        </h2>
+        <h2 className="text-xl font-bold">Mis materiales</h2>
 
-        <p className="mt-1 text-sm text-slate-500">
-          Consulta y organiza tus archivos académicos.
-        </p>
+        <p className="mt-1 text-sm text-slate-500">Consulta y organiza tus archivos académicos.</p>
       </div>
 
       <div className="mb-6 grid gap-3 sm:grid-cols-[minmax(0,1fr)_220px]">
-      <div className="relative">
-        <Search aria-hidden="true"
-          size={19}
-          className="pointer-events-none absolute left-4 top-3.5 text-slate-400"
-        />
+        <div className="relative">
+          <Search
+            aria-hidden="true"
+            size={19}
+            className="pointer-events-none absolute left-4 top-3.5 text-slate-400"
+          />
 
-        <input
-          type="search"
-          aria-label="Buscar materiales"
-          placeholder="Buscar por nombre..."
-          className="field search-field"
-          value={search}
-          onChange={(e) => changeSearch(e.target.value)}
-        />
-      </div>
-      <select className="field" aria-label="Filtrar por materia" value={subjectId} onChange={(event) => changeSubject(event.target.value)}>
-        <option value="">Todas las materias</option>
-        {subjects.map((subject) => <option key={subject.id} value={subject.id}>{subject.name}</option>)}
-      </select>
+          <input
+            type="search"
+            aria-label="Buscar materiales"
+            placeholder="Buscar por nombre..."
+            className="field search-field"
+            value={search}
+            onChange={(e) => changeSearch(e.target.value)}
+          />
+        </div>
+        <select
+          className="field"
+          aria-label="Filtrar por materia"
+          value={subjectId}
+          onChange={(event) => changeSubject(event.target.value)}
+        >
+          <option value="">Todas las materias</option>
+          {subjects.map((subject) => (
+            <option key={subject.id} value={subject.id}>
+              {subject.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       {actionError && (
-        <div
-          role="alert"
-          className="mb-5 rounded-xl bg-red-50 p-4 text-sm text-red-700"
-        >
+        <div role="alert" className="mb-5 rounded-xl bg-red-50 p-4 text-sm text-red-700">
           {actionError}
         </div>
       )}
 
       {loading ? (
-        <p className="py-12 text-center text-slate-500">
-          Cargando materiales...
-        </p>
+        <p className="py-12 text-center text-slate-500">Cargando materiales...</p>
       ) : error ? (
         <div className="py-10 text-center">
           <p className="text-red-600">{error}</p>
@@ -156,18 +151,11 @@ export function ResourcesList() {
         </div>
       ) : resources.length === 0 ? (
         <div className="py-12 text-center">
-          <FileText
-            size={44}
-            className="mx-auto text-violet-300"
-          />
+          <FileText size={44} className="mx-auto text-violet-300" />
 
-          <h3 className="mt-4 font-bold">
-            No se encontraron materiales
-          </h3>
+          <h3 className="mt-4 font-bold">No se encontraron materiales</h3>
 
-          <p className="mt-2 text-sm text-slate-500">
-            Los documentos que subas aparecerán aquí.
-          </p>
+          <p className="mt-2 text-sm text-slate-500">Los documentos que subas aparecerán aquí.</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -184,13 +172,9 @@ export function ResourcesList() {
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  <h3 className="truncate font-semibold">
-                    {resource.title}
-                  </h3>
+                  <h3 className="truncate font-semibold">{resource.title}</h3>
 
-                  <p className="mt-1 truncate text-xs text-slate-400">
-                    {resource.fileType}
-                  </p>
+                  <p className="mt-1 truncate text-xs text-slate-400">{resource.fileType}</p>
                 </div>
 
                 <button

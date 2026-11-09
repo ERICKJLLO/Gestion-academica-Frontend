@@ -1,33 +1,27 @@
-﻿"use client";
+﻿'use client';
 
-import {
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { useCallback, useEffect, useState } from 'react';
 
-import { resourcesService } from "../services/resources";
+import { resourcesService } from '../services/resources';
 
-import type {
-  AcademicResource,
-} from "../domain/types";
+import type { AcademicResource } from '../domain/types';
 
 export function useResources() {
   const [resources, setResources] = useState<AcademicResource[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
-  const [search, setSearch] = useState("");
-  const [subjectId, setSubjectId] = useState("");
+  const [search, setSearch] = useState('');
+  const [subjectId, setSubjectId] = useState('');
 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   const loadResources = useCallback(async () => {
     setLoading(true);
-    setError("");
+    setError('');
 
     try {
       const response = await resourcesService.getAll({
@@ -39,15 +33,9 @@ export function useResources() {
 
       setResources(response.data);
       setTotal(response.pagination.total);
-      setTotalPages(
-        Math.max(1, response.pagination.totalPages)
-      );
+      setTotalPages(Math.max(1, response.pagination.totalPages));
     } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "No se pudieron cargar los materiales."
-      );
+      setError(err instanceof Error ? err.message : 'No se pudieron cargar los materiales.');
     } finally {
       setLoading(false);
     }
