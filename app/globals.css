@@ -3,5 +3,6 @@
 @tailwind utilities;
 body { color:#17233c;background:#f6f7fc; }
 .field { @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-violet-500 focus:ring-4 focus:ring-violet-100; }
+.search-field { padding-left: 2.9rem; }
 .btn-primary { @apply inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60; }
 .card { @apply rounded-2xl border border-slate-100 bg-white shadow-soft; }
